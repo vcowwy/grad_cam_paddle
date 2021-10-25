@@ -43,12 +43,9 @@ class GuidedBackpropReLUasModule(paddle.nn.Layer):
 
 class GuidedBackpropReLUModel:
 
-    def __init__(self, model, use_cuda):
+    def __init__(self, model):
         self.model = model
         self.model.eval()
-        self.cuda = use_cuda
-        if self.cuda:
-            self.model = self.model.cuda()
 
     def forward(self, input_img):
         return self.model(input_img)
@@ -74,9 +71,6 @@ class GuidedBackpropReLUModel:
         replace_all_layer_type_recursive(self.model,
                                          paddle.nn.ReLU,
                                          GuidedBackpropReLUasModule())
-
-        if self.cuda:
-            input_img = input_img.cuda()
 
         input_img = input_img.requires_grad_(True)
 

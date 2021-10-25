@@ -32,8 +32,7 @@
 
 ⭐ 支持的smoothing模式为aug_smooth和eigen_smooth。
 
-To reduce noise in the CAMs, and make it fit better on the objects,
-two smoothing methods are supported:
+To reduce noise in the CAMs, and make it fit better on the objects, two smoothing methods are supported:
 
 - `aug_smooth=True`
 
@@ -54,7 +53,38 @@ two smoothing methods are supported:
 
 ⭐ 使用的模型为resnet50。
 
-⭐ 加载的图片input_img为./examples/both.png。
+./models/torch2paddle.py脚本：用于保存torchvision.models.resnet50的预训练模型到本地；
+
+将resnet50 torch的预训练模型`resnet50.pth`转换为resnet50 paddle的预训练模型`resnet50.pdparams`。
+
+⭐ 默认加载的图片input_img为./examples/both.png。
+
+----------
+
+# 运行命令
+
+Usage(默认为CPU环境、不使用smooth模式):
+
+`python cam.py --image-path <path_to_image> --method <method>`
+
+
+CUDA环境下不使用smooth的运行命令:
+
+`python cam.py --image-path <path_to_image> --use-cuda --method <method>`
+
+使用aug_smooth的运行命令：
+
+`python cam.py --image-path <path_to_image> --method <method> --aug_smooth`
+
+使用eigen_smooth的运行命令：
+
+`python cam.py --image-path <path_to_image> --method <method> --eigen_smooth`
+
+使用aug_smooth+eigen_smooth的运行命令：
+
+`python cam.py --image-path <path_to_image> --method <method> --aug_smooth --eigen_smooth`
+
+----------
 
 ## 实验过程
 

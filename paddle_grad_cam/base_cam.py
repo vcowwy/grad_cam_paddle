@@ -11,16 +11,12 @@ class BaseCAM:
     def __init__(self,
                  model,
                  target_layers,
-                 use_cuda=False,
                  reshape_transform=None,
                  compute_input_gradient=False,
                  uses_gradients=True):
 
         self.model = model.eval()
         self.target_layers = target_layers
-        self.cuda = use_cuda
-        if self.cuda:
-            self.model = model.cuda()
         self.reshape_transform = reshape_transform
         self.compute_input_gradient = compute_input_gradient
         self.uses_gradients = uses_gradients
@@ -64,9 +60,6 @@ class BaseCAM:
         return cam
 
     def forward(self, input_tensor, target_category=None, eigen_smooth=False):
-        if self.cuda:
-            input_tensor = input_tensor.cuda()
-
         if self.compute_input_gradient:
             input_tensor = paddle.to_tensor(input_tensor,
                                             requires_grad=True)

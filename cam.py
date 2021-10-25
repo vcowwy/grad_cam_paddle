@@ -46,8 +46,10 @@ def get_args():
     args.use_cuda = args.use_cuda and paddle.is_compiled_with_cuda()
     if args.use_cuda:
         print('Using GPU for acceleration')
+        paddle.set_device("gpu")
     else:
         print('Using CPU for computation')
+        paddle.set_device("cpu")
 
     return args
 
@@ -81,8 +83,7 @@ if __name__ == '__main__':
     cam_algorithm = methods[args.method]
 
     with cam_algorithm(model=model,
-                       target_layers=target_layers,
-                       use_cuda=args.use_cuda) as cam:
+                       target_layers=target_layers) as cam:
 
         cam.batch_size = 32
 
@@ -97,8 +98,8 @@ if __name__ == '__main__':
 
         cam_image = cv2.cvtColor(cam_image, cv2.COLOR_RGB2BGR)
 
-    #cam_mask = cv2.merge([grayscale_cam, grayscale_cam, grayscale_cam])
-    #gb_model = GuidedBackpropReLUModel(model=model, use_cuda=args.use_cuda)
+    cam_mask = cv2.merge([grayscale_cam, grayscale_cam, grayscale_cam])
+    gb_model = GuidedBackpropReLUModel(model=model, use_cuda=args.use_cuda)
     #gb = gb_model(input_tensor, target_category=target_category)
     #cam_gb = deprocess_image(cam_mask * gb)
     #gb = deprocess_image(gb)

@@ -1,7 +1,6 @@
 import tqdm
 
 import paddle
-from x2paddle import torch2paddle
 
 from paddle_grad_cam.base_cam import BaseCAM
 
@@ -11,9 +10,8 @@ class ScoreCAM(BaseCAM):
     def __init__(self,
                  model,
                  target_layers,
-                 use_cuda=False,
                  reshape_transform=None):
-        super(ScoreCAM, self).__init__(model, target_layers, use_cuda,
+        super(ScoreCAM, self).__init__(model, target_layers,
                                        reshape_transform=reshape_transform)
         #if len(target_layers) > 0:
         #    print('Warning: You are using ScoreCAM with target layers,'
@@ -29,8 +27,6 @@ class ScoreCAM(BaseCAM):
             upsample = paddle.nn.UpsamplingBilinear2D(
                 size=input_tensor.shape[-2:])
             activation_tensor = paddle.to_tensor(activations)
-            if self.cuda:
-                activation_tensor = activation_tensor.cuda()
 
             upsampled = upsample(activation_tensor)
 
@@ -60,7 +56,7 @@ class ScoreCAM(BaseCAM):
                     batch = tensor[i:i + BATCH_SIZE, :]
                     outputs = self.model(batch).cpu().numpy()[:, category]
                     scores.extend(outputs)
-            scores = torch2paddle.create_tensor(scores)
+            scores = paddle.to_tensor(scores)
             scores = scores.view(activations.shape[0], activations.shape[1])
 
             weights = paddle.nn.Softmax(axis=-1)(scores).numpy()

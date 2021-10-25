@@ -7,11 +7,9 @@ class XGradCAM(BaseCAM):
     def __init__(self,
                  model,
                  target_layers,
-                 use_cuda=False,
                  reshape_transform=None):
         super(XGradCAM, self).__init__(model,
                                        target_layers,
-                                       use_cuda,
                                        reshape_transform)
 
     def get_cam_weights(self,

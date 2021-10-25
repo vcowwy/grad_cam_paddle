@@ -9,7 +9,7 @@ from paddle_grad_cam.utils.svd_on_activations import get_2d_projection
 
 class FullGrad(BaseCAM):
 
-    def __init__(self, model, target_layers, use_cuda=False,
+    def __init__(self, model, target_layers,
                  reshape_transform=None):
         #if len(target_layers) > 0:
         #    print('Warning: target_layers is ignored in FullGrad. All bias layers will be used instead')
@@ -24,7 +24,6 @@ class FullGrad(BaseCAM):
             model, layer_with_2D_bias)
         super(FullGrad, self).__init__(model,
                                        target_layers,
-                                       use_cuda,
                                        reshape_transform,
                                        compute_input_gradient=True)
         self.bias_data = [self.get_bias_data(layer).cpu().numpy()
