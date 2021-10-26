@@ -29,13 +29,15 @@ def get_args():
                         default='./examples/both.png',
                         help='Input image path')
     parser.add_argument('--aug_smooth',
+                        default=True,
                         action='store_true',
                         help='Apply test time augmentation to smooth the CAM')
     parser.add_argument('--eigen_smooth',
+                        default=True,
                         action='store_true',
                         help='Reduce noise by taking the first principle componenetof cam_weights*activations')
     parser.add_argument('--method', type=str,
-                        default='gradcam',
+                        default='gradcam++',
                         choices=['gradcam', 'gradcam++',
                                  'scorecam', 'xgradcam',
                                  'ablationcam', 'eigencam',
@@ -99,7 +101,7 @@ if __name__ == '__main__':
         cam_image = cv2.cvtColor(cam_image, cv2.COLOR_RGB2BGR)
 
     cam_mask = cv2.merge([grayscale_cam, grayscale_cam, grayscale_cam])
-    gb_model = GuidedBackpropReLUModel(model=model, use_cuda=args.use_cuda)
+    gb_model = GuidedBackpropReLUModel(model=model)
     #gb = gb_model(input_tensor, target_category=target_category)
     #cam_gb = deprocess_image(cam_mask * gb)
     #gb = deprocess_image(gb)

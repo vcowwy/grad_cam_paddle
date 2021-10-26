@@ -15,7 +15,8 @@ class BaseCAM:
                  compute_input_gradient=False,
                  uses_gradients=True):
 
-        self.model = model.eval()
+        self.model = model
+        self.model.eval()
         self.target_layers = target_layers
         self.reshape_transform = reshape_transform
         self.compute_input_gradient = compute_input_gradient
@@ -72,7 +73,7 @@ class BaseCAM:
             target_category = [target_category] * input_tensor.size(0)
 
         if target_category is None:
-            target_category = np.argmax(output.cpu().data.numpy(), axis=-1)
+            target_category = np.argmax(output.numpy(), axis=-1)
         else:
             assert len(target_category) == input_tensor.size(0)
 
@@ -88,7 +89,8 @@ class BaseCAM:
         return self.aggregate_multi_layers(cam_per_layer)
 
     def get_target_width_height(self, input_tensor):
-        width, height = input_tensor.size(-1), input_tensor.size(-2)
+        width = input_tensor.shape[-1]
+        height = input_tensor.shape[-2]
         return width, height
 
     def compute_cam_per_layer(self,
