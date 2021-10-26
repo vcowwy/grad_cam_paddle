@@ -29,11 +29,9 @@ def get_args():
                         default='./examples/both.png',
                         help='Input image path')
     parser.add_argument('--aug_smooth',
-                        default=True,
                         action='store_true',
                         help='Apply test time augmentation to smooth the CAM')
     parser.add_argument('--eigen_smooth',
-                        default=True,
                         action='store_true',
                         help='Reduce noise by taking the first principle componenetof cam_weights*activations')
     parser.add_argument('--method', type=str,
